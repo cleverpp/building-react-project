@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+    mode:'development',
     entry:[
         /*'webpack-dev-server/client',*/
         path.resolve(root, 'src/main.js')
