@@ -208,6 +208,36 @@ React Loadable 将动态引入(dynamic import)封装成了一个对 React 友好
 它可以创建：加载状态、错误状态、超时、预加载等。
 2. 基于路由进行分割
 
+示例：
+```
+import React from 'react'
+import {hot} from 'react-hot-loader'
+import {HashRouter, Route, Switch} from 'react-router-dom'
+import Loadable from 'react-loadable'
+
+const Loading = () => <div>Loading...</div>;
+
+const Home = Loadable({
+    loader: () => import('./pages/Home'),
+    loading: Loading,
+});
+
+const Sample = Loadable({
+    loader: () => import('./pages/Sample'),
+    loading: Loading,
+});
+
+const App = () => (
+    <HashRouter>
+        <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route path="/sample" component={Sample}/>
+        </Switch>
+    </HashRouter>
+)
+
+export default hot(module)(App)
+```
 
 ### 代码分离的参考链接
 1. [Code Splitting in Create React App](https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html)

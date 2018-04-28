@@ -50,3 +50,4 @@ class MyRouter extends Component {
 2. [React Router v4 入坑指南- 简书](https://www.jianshu.com/p/6a45e2dfc9d9)
 3. [V4中文文档](https://github.com/react-translate-team/react-router-CN)
 4. [Migrating from v2/v3 to v4](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/migrating.md)
+5. [简明React Router v4教程](https://juejin.im/post/5a7e9ee7f265da4e7832949c)
