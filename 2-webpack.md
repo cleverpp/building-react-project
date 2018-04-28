@@ -176,19 +176,42 @@ const App = () => <div>Hello World! zcp is wonderful</div>
 
 export default hot(module)(App)
 ```
-## 生产环境构建
-
 ## 代码分离code spliting 和 懒加载
-- 方式一：多入口+CommonsChunkPlugin
-- 方式二：动态导入：require.ensure()，dynamic import()
+### 方式一：多入口+CommonsChunkPlugin
+例如：希望将第三方库代码分离，可以将在入口entry配置vender:第三方库的路径，
+然后利用commonsChunkPlugin提取公共模块的功能，将第三方库提取到单独的模块中，从而实现代码分离
+### 方式二：动态导入：require.ensure()，dynamic import()
+- 使用import(module).then(callback)
+- webpack配置,修改output项
+```
+module.exports={
+    ...
+    output: {
+        // `filename` provides a template for naming your bundles (remember to use `[name]`)
+        filename: '[name].bundle.js',
+        // `chunkFilename` provides a template for naming code-split bundles (optional)
+        chunkFilename: '[name].bundle.js',
+        // `path` is the folder where Webpack will place your bundles
+        path: path.resolve(root, 'dist')
+        // `publicPath` is where Webpack will load your bundles from (optional)
+        // publicPath: path.resolve(root, 'dist/')
+    }
+    ...
+};
+```
+- babel配置，需添加babel-plugin-syntax-dynamic-import
 
 ### React中实现代码分离和懒加载
-1. babel中需增加babel-plugin-syntax-dynamic-import插件
-2. 使用react-loadable
-3. 
+1. React Loadable
+
+React Loadable 将动态引入(dynamic import)封装成了一个对 React 友好的 API 来在特定组件下引入代码分割的功能，本质是封装dynamic import的一个高阶组件(HOC)，
+它可以创建：加载状态、错误状态、超时、预加载等。
+2. 基于路由进行分割
 
 
-#### 参考链接
+### 代码分离的参考链接
 1. [Code Splitting in Create React App](https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html)
+2. []()
 ## 如何拆分第三方代码库或项目中的公共库 - CommonsChunkPlugin
 ## 如何拆分CSS - ExtractTextWebpackPlugin
+## 生产环境构建

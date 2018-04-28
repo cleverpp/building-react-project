@@ -15,7 +15,8 @@ module.exports = {
         path.resolve(root, 'src/main.js')
     ],
     output: {
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
         path: path.resolve(root, 'dist')
     },
     devServer:{
