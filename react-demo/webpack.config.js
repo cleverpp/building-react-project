@@ -8,14 +8,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+    bail:true,
     entry:[
         /*'webpack-dev-server/client',*/
         path.resolve(root, 'src/main.js')
     ],
     output: {
         filename: '[name].bundle.js',
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: 'chunck/[name].bundle.js',
         path: path.resolve(root, 'dist')
+    },
+    externals:{
+        Zepto:'Zepto'
     },
     module: {
         rules: [

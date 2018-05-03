@@ -242,8 +242,7 @@ export default hot(module)(App)
 ### 代码分离的参考链接
 1. [Code Splitting in Create React App](https://serverless-stack.com/chapters/code-splitting-in-create-react-app.html)
 2. []()
-## 如何拆分第三方代码库或项目中的公共库 - CommonsChunkPlugin
-## 如何拆分CSS - ExtractTextWebpackPlugin
+
 ## 生产环境构建
 - 为每个环境编写彼此独立的 webpack 配置, 一个通用配置，使用webpack-merge进行合并
 - 安装webpack-merger
@@ -303,3 +302,4 @@ module.exports = merge(base,{
   ...
 }
 ```
+## 
