@@ -8,7 +8,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = merge(base,{
     mode:'production',
-    devtool: 'source-map',
+    /*devtool: 'source-map',*/
     plugins:[
         new UglifyJsPlugin({
             sourceMap:true

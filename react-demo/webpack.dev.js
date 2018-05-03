@@ -9,6 +9,10 @@ const base = require('./webpack.config.js');
 
 module.exports = merge(base,{
     mode:'development',
+    watch:true,
+    watchOptions:{
+        ignored: /node_modules/
+    },
     devtool: 'inline-source-map',
     devServer:{
         contentBase: path.resolve(root, "dist"),
