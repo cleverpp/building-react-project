@@ -2,12 +2,10 @@
  * Created by cpzhang on 2018/4/28.
  */
 import React from 'react';
-import $ from 'Zepto';
+/*import $ from 'Zepto';*/
 
 class Home extends React.Component {
     componentDidMount(){
-        var root = $('#root');
-        console.log(root);
     }
 
     render(){

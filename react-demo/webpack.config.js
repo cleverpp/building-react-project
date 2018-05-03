@@ -18,9 +18,9 @@ module.exports = {
         chunkFilename: 'chunck/[name].bundle.js',
         path: path.resolve(root, 'dist')
     },
-    externals:{
+    /*externals:{
         Zepto:'Zepto'
-    },
+    },*/
     module: {
         rules: [
             {test: /\.jsx?$/, use: 'babel-loader', exclude: /node_modules/},
