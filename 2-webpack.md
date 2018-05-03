@@ -245,3 +245,61 @@ export default hot(module)(App)
 ## 如何拆分第三方代码库或项目中的公共库 - CommonsChunkPlugin
 ## 如何拆分CSS - ExtractTextWebpackPlugin
 ## 生产环境构建
+- 为每个环境编写彼此独立的 webpack 配置, 一个通用配置，使用webpack-merge进行合并
+- 安装webpack-merger
+- webpack.dev.js
+```
+const webpack = require('webpack');
+const path = require('path');
+const root = __dirname;
+const merge = require('webpack-merge');
+const base = require('./webpack.config.js');
+
+module.exports = merge(base,{
+    mode:'development',
+    devtool: 'inline-source-map',
+    devServer:{
+        contentBase: path.resolve(root, "dist"),
+        host:"0.0.0.0", // 或者你本机的ip，不设置这个默认只能localhost访问
+        port:9002,
+        compress:true,
+        hot:true
+    },
+    plugins:[
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin()
+    ]
+});
+```
+- webpack.prod.js
+```
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const base = require('./webpack.config.js');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+module.exports = merge(base,{
+    mode:'production',
+    devtool: 'source-map',
+    plugins:[
+        new UglifyJsPlugin({
+            sourceMap:true
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        })
+    ]
+});
+```
+- npm scripts
+```
+{
+  ...
+  "scripts": {
+    "dev": "webpack --config webpack.dev.js --watch",
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js"
+  },
+  ...
+}
+```
