@@ -5,6 +5,7 @@ import React from 'react'
 import {hot} from 'react-hot-loader'
 import {HashRouter, Route, Switch} from 'react-router-dom'
 import Loadable from 'react-loadable'
+import './App.css'
 
 const Loading = () => <div>Loading...</div>;
 

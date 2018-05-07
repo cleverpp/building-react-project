@@ -302,4 +302,40 @@ module.exports = merge(base,{
   ...
 }
 ```
-## 
+## loaders
+### url-loader 和 file-loader
+- url-loader 和 file-loader 都可以处理图片
+- url-loader在文件大小（单位 byte）低于指定的限制时，可以返回一个 DataURL
+- 仅使用url-loader
+小于30k的图片转为DataURL，超过则原样copy到目标文件加下images/目录下
+```
+{test: /\.(png|jpg|gif)$/, use: 'url-loader?limit=30720&name=images/[name].[ext]?[hash:8]'}
+```
+- 仅使用file-loader
+所有文件均原样copy到目标文件加下images/目录下
+```
+{test: /\.(png|jpg|gif)$/, use: 'file-loader?name=images/[name].[ext]?[hash:8]'}
+```
+- 同时使用 url-loader 和 file-loader
+不能对同一范围的文件同时使用这个两个loader，需使用exclude/include指定各个loader的处理范围
+```
+{
+    test: /\.(png|jpg|gif)$/,
+    use: 'url-loader?limit=30720&name=images/[name].[ext]?[hash:8]',
+    exclude: path.resolve(root, 'src/images/normal')
+},
+{
+    test: /\.(png|jpg|gif)$/,
+    use: 'file-loader?name=images/normal/[name].[ext]?[hash:8]',
+    include: path.resolve(root, 'src/images/normal')
+}
+```
+这样，对于一些上线后允许运维自行处理的图片就可以放在normal目录下。
+
+## 插件
+### ExtractTextWebpackPlugin
+- 功能：抽取内容到单独的一个文件，例如将webpack默认的内联css抽取到一个单独的css文件
+- 如果是 webpack 3.x 则直接安装 extract-text-webpack-plugin ，4.x 则末尾需要加@next
+```
+npm install --save-dev extract-text-webpack-plugin@next
+```
