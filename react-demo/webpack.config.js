@@ -6,7 +6,7 @@ const root = __dirname;
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+/*const ExtractTextPlugin = require('extract-text-webpack-plugin');*/
 /*const MiniCssExtractPlugin = require("mini-css-extract-plugin");*/
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
     module: {
         rules: [
             {test: /\.jsx?$/, use: 'babel-loader', exclude: /node_modules/},
-            /*{test: /\.css$/, use: ['style-loader', 'css-loader']},*/
+            {test: /\.css$/, use: ['style-loader', 'css-loader']},
             {
                 test: /\.(png|jpg|gif)$/,
                 use: 'url-loader?limit=30720&name=images/[name].[ext]?[hash:8]',
@@ -37,13 +37,13 @@ module.exports = {
                 use: 'file-loader?name=images/normal/[name].[ext]?[hash:8]',
                 include: path.resolve(root, 'src/images/normal')
             },
-            {
+            /*{
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
+                    use:'css-loader',
+                    fallback:'style-loader'
                 })
-            }
+            }*/
             /*{
                 test: /\.css$/,
                 use: [
@@ -69,11 +69,11 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             template: 'index.html'
-        }),
-        new ExtractTextPlugin({
-            filename:'[name].[hash:8].css'
-            /*allChunks:true*/
         })
+        /*new ExtractTextPlugin({
+            filename:'[name].[hash:8].css'
+            /!*allChunks:true*!/
+        })*/
         /*new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "css/[id].css"
