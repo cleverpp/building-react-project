@@ -4,6 +4,7 @@
 import React from 'react';
 import addRecords from '../images/normal/add-records.png';
 import test30 from '../images/normal/test30.png';
+import './Home.css'
 
 class Sample extends React.Component {
 

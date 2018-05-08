@@ -7,16 +7,17 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+/*const MiniCssExtractPlugin = require("mini-css-extract-plugin");*/
 
 module.exports = {
     bail: true,
-    entry: [
+    entry: {
         /*'webpack-dev-server/client',*/
-        path.resolve(root, 'src/main.js')
-    ],
+        main:path.resolve(root, 'src/main.js')
+    },
     output: {
         filename: '[name].bundle.js',
-        chunkFilename: 'chunck/[name].bundle.js',
+        chunkFilename: 'chunk/[name].bundle.js',
         path: path.resolve(root, 'dist')
     },
     /*externals:{
@@ -43,13 +44,39 @@ module.exports = {
                     use: "css-loader"
                 })
             }
+            /*{
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader"
+                ]
+            }*/
         ]
     },
+    /*optimization: {
+        splitChunks: {
+            cacheGroups: {
+                styles: {
+                    name: 'style',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true
+                }
+            }
+        }
+    },*/
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             template: 'index.html'
         }),
-        new ExtractTextPlugin("styles.css")
+        new ExtractTextPlugin({
+            filename:'[name].[hash:8].css'
+            /*allChunks:true*/
+        })
+        /*new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "css/[id].css"
+        })*/
     ]
 };

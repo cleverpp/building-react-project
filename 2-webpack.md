@@ -303,7 +303,7 @@ module.exports = merge(base,{
 }
 ```
 ## loaders
-### url-loader 和 file-loader
+### 加载图片(url-loader 和 file-loader)
 - url-loader 和 file-loader 都可以处理图片
 - url-loader在文件大小（单位 byte）低于指定的限制时，可以返回一个 DataURL
 - 仅使用url-loader
@@ -332,10 +332,62 @@ module.exports = merge(base,{
 ```
 这样，对于一些上线后允许运维自行处理的图片就可以放在normal目录下。
 
+### 图片压缩
+- image-webpack-loader
+- imagemin-webpack-plugin
+
 ## 插件
-### ExtractTextWebpackPlugin
-- 功能：抽取内容到单独的一个文件，例如将webpack默认的内联css抽取到一个单独的css文件
-- 如果是 webpack 3.x 则直接安装 extract-text-webpack-plugin ，4.x 则末尾需要加@next
-```
-npm install --save-dev extract-text-webpack-plugin@next
-```
+### CSS抽离
+- ExtractTextWebpackPlugin
+    + 功能：抽取内容到单独的一个文件，例如将webpack默认的内联css抽取到一个单独的css文件
+    + 如果是 webpack 3.x 则直接安装 extract-text-webpack-plugin ，4.x 则末尾需要加@next
+        ```
+        npm install --save-dev extract-text-webpack-plugin@next
+        ```
+    + 默认只会提取入口文件的css到单独的文件中，并且对每个入口 chunk 都生成一个对应的文件
+    + allChunks为true时，会将所依赖的所有chunk的css都提取到该入口文件css中
+- mini-css-extract-plugin
+    + 功能：抽取css，不同于ExtractTextWebpackPlugin，支持按需加载，可以为每个chunk建立对应的css文件
+        ```
+        const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+        module.exports = {
+          plugins: [
+            new MiniCssExtractPlugin({
+              // Options similar to the same options in webpackOptions.output
+              // both options are optional
+              filename: "[name].css",
+              chunkFilename: "[id].css"
+            })
+          ],
+          module: {
+            rules: [
+              {
+                test: /\.css$/,
+                use: [
+                  MiniCssExtractPlugin.loader,
+                  "css-loader"
+                ]
+              }
+            ]
+          }
+        }
+        ```
+    + 默认为每个chunk建立对应的css，有几个chunk则有几个css，也可以将所有的chunk抽取到一个css文件，增加optimization.splitChunks.cacheGroups的配置
+    ```
+      optimization: {
+        splitChunks: {
+          cacheGroups: {
+            styles: {
+              name: 'styles',
+              test: /\.css$/,
+              chunks: 'all',
+              enforce: true
+            }
+          }
+        }
+      },
+    ```
+    + 如果想为每个入口chunk都生成一个对应的css，也需要特殊处理，见：[extracting-css-based-on-entry](https://github.com/webpack-contrib/mini-css-extract-plugin#extracting-css-based-on-entry)
+### 
+
+      

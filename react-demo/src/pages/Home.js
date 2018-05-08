@@ -5,6 +5,7 @@ import React from 'react';
 /*import $ from 'Zepto';*/
 import addRecords from '../images/add-records.png';
 import test30 from '../images/test30.png';
+import './Home.css';
 
 class Home extends React.Component {
     componentDidMount(){
