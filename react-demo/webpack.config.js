@@ -16,13 +16,17 @@ module.exports = {
         main:path.resolve(root, 'src/main.js')
     },
     output: {
-        filename: '[name].bundle.js',
-        chunkFilename: 'chunk/[name].bundle.js',
         path: path.resolve(root, 'dist')
     },
     /*externals:{
      Zepto:'Zepto'
      },*/
+    optimization:{
+        runtimeChunk:true,
+        splitChunks:{
+            chunks:'all'
+        }
+    },
     module: {
         rules: [
             {test: /\.jsx?$/, use: 'babel-loader', exclude: /node_modules/},

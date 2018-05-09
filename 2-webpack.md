@@ -265,31 +265,33 @@ module.exports = merge(base,{
         hot:true
     },
     plugins:[
-        new webpack.NamedModulesPlugin(),
+        /*new webpack.NamedModulesPlugin(),*/
         new webpack.HotModuleReplacementPlugin()
     ]
 });
 ```
+mode为development时，默认启用了NamedModulesPlugin插件；process.env.NODE_ENV 的值不需要再定义，默认是 development；
 - webpack.prod.js
 ```
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const base = require('./webpack.config.js');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+/*const UglifyJsPlugin = require('uglifyjs-webpack-plugin');*/
 
 module.exports = merge(base,{
     mode:'production',
     devtool: 'source-map',
     plugins:[
-        new UglifyJsPlugin({
+        /*new UglifyJsPlugin({
             sourceMap:true
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
-        })
+        })*/
     ]
 });
 ```
+mode为production时,默认提供所有可能的优化，如代码压缩/作用域提升等;process.env.NODE_ENV 的值不需要再定义，默认是 production;
 - npm scripts
 ```
 {
@@ -302,6 +304,44 @@ module.exports = merge(base,{
   ...
 }
 ```
+## 缓存
+- chunkhash，将output.filename和output.chunkFilename使用根据chunk内容生产的hansh，即chunkhash
+    + webpack-dev-server中入口chunk不允许使用chunkhash，所以仅在生产模式这样配置,开发环境可以使用[hash]或不使用任何hash
+        ```
+        output: {
+        -     filename: 'bundle.js',
+        +     filename: '[name].[chunkhash].js',
+              path: path.resolve(__dirname, 'dist')
+        }
+        ```
+- contenthash，适用于ExtractTextWebpackPlugin插件，可以保证抽离出来的css没有修改时，生成的contenthash不会改变。
+- 抽取公共chunk(webpack4使用了两个新的配置项 optimization.splitChunks 和 optimization.runtimeChunk 代替CommonsChunkPlugin来实现该功能)
+    + webpack的runtime和manifest:通过设置 optimization.runtimeChunk: true 来为每一个入口默认添加一个只包含 runtime 的 chunk
+        ```
+        module.exports = {
+            ...
+            optimization:{
+                    runtimeChunk:true
+            },
+            ...
+        }
+        ```
+    + 第三方库分离(例如：react、react-dom、react-router-dom等node_modules中的库)
+        ```
+        module.exports = {
+             ...
+             optimization:{
+                runtimeChunk:true,
+                splitChunks:{
+                    chunks:'all'
+                }
+             },
+             ...
+        }
+        ```
+    + [再见，CommonsChunkPlugin](https://zhuanlan.zhihu.com/p/34082892)
+- module id问题（每个 module.id 会基于默认的解析顺序(resolve order)进行增量，当解析顺序发生变化，ID 也会随之改变），而HashedModuleIdsPlugin插件会根据模块的相对路径生成一个四位数的hash作为模块id, 可以解决module id问题，建议用于生产环境。
+
 ## loaders
 ### 加载图片(url-loader 和 file-loader)
 - url-loader 和 file-loader 都可以处理图片
@@ -388,6 +428,8 @@ module.exports = merge(base,{
       },
     ```
     + 如果想为每个入口chunk都生成一个对应的css，也需要特殊处理，见：[extracting-css-based-on-entry](https://github.com/webpack-contrib/mini-css-extract-plugin#extracting-css-based-on-entry)
-### 
+### 提取公共chunk
+- CommonsChunkPlugin，webpack4中已移除
+- SplitChunksPlugin
 
       

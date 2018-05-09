@@ -14,6 +14,10 @@ module.exports = merge(base,{
         ignored: /node_modules/
     },
     devtool: 'inline-source-map',
+    output:{
+        filename: '[name].bundle.js',
+        chunkFilename: 'chunk/[name].bundle.js',
+    },
     devServer:{
         contentBase: path.resolve(root, "dist"),
         host:"0.0.0.0", // 或者你本机的ip，不设置这个默认只能localhost访问
@@ -22,7 +26,7 @@ module.exports = merge(base,{
         hot:true
     },
     plugins:[
-        new webpack.NamedModulesPlugin(),
+        /*new webpack.NamedModulesPlugin(),*/
         new webpack.HotModuleReplacementPlugin()
     ]
 });
