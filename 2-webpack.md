@@ -342,6 +342,10 @@ mode为production时,默认提供所有可能的优化，如代码压缩/作用�
     + [再见，CommonsChunkPlugin](https://zhuanlan.zhihu.com/p/34082892)
 - module id问题（每个 module.id 会基于默认的解析顺序(resolve order)进行增量，当解析顺序发生变化，ID 也会随之改变），而HashedModuleIdsPlugin插件会根据模块的相对路径生成一个四位数的hash作为模块id, 可以解决module id问题，建议用于生产环境。
 
+## PWA(Progressive Web Application)
+- workbox-webpack-plugin
+- 在入口文件中注册service worker
+
 ## loaders
 ### 加载图片(url-loader 和 file-loader)
 - url-loader 和 file-loader 都可以处理图片
@@ -430,6 +434,6 @@ mode为production时,默认提供所有可能的优化，如代码压缩/作用�
     + 如果想为每个入口chunk都生成一个对应的css，也需要特殊处理，见：[extracting-css-based-on-entry](https://github.com/webpack-contrib/mini-css-extract-plugin#extracting-css-based-on-entry)
 ### 提取公共chunk
 - CommonsChunkPlugin，webpack4中已移除
-- SplitChunksPlugin
+- optimization.splitChunks 和 optimization.runtimeChunk
 
       

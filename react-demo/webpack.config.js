@@ -6,8 +6,7 @@ const root = __dirname;
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-/*const ExtractTextPlugin = require('extract-text-webpack-plugin');*/
-/*const MiniCssExtractPlugin = require("mini-css-extract-plugin");*/
+
 
 module.exports = {
     bail: true,
@@ -26,6 +25,14 @@ module.exports = {
         splitChunks:{
             chunks:'all'
         }
+        /*cacheGroups: {
+            styles: {
+                name: 'style',
+                test: /\.css$/,
+                chunks: 'all',
+                enforce: true
+            }
+        }*/
     },
     module: {
         rules: [
@@ -40,47 +47,13 @@ module.exports = {
                 test: /\.(png|jpg|gif)$/,
                 use: 'file-loader?name=images/normal/[name].[ext]?[hash:8]',
                 include: path.resolve(root, 'src/images/normal')
-            },
-            /*{
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use:'css-loader',
-                    fallback:'style-loader'
-                })
-            }*/
-            /*{
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    "css-loader"
-                ]
-            }*/
+            }
         ]
     },
-    /*optimization: {
-        splitChunks: {
-            cacheGroups: {
-                styles: {
-                    name: 'style',
-                    test: /\.css$/,
-                    chunks: 'all',
-                    enforce: true
-                }
-            }
-        }
-    },*/
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             template: 'index.html'
         })
-        /*new ExtractTextPlugin({
-            filename:'[name].[hash:8].css'
-            /!*allChunks:true*!/
-        })*/
-        /*new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "css/[id].css"
-        })*/
     ]
 };
