@@ -9,6 +9,10 @@ import './Home.css';
 
 class Home extends React.Component {
     componentDidMount(){
+        const {location, match, history} = this.props;
+        console.log(location);
+        console.log(match);
+        console.log(history);
     }
 
     render(){
