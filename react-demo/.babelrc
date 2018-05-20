@@ -9,5 +9,5 @@
     "react-hot-loader/babel",
     "syntax-dynamic-import"
   ],
-  "comments": false
+  "comments": true
 }
