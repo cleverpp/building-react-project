@@ -8,6 +8,5 @@
     "transform-runtime",
     "react-hot-loader/babel",
     "syntax-dynamic-import"
-  ],
-  "comments": true
+  ]
 }
