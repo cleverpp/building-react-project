@@ -7,15 +7,19 @@ import {HashRouter, Route, Switch} from 'react-router-dom'
 import Loadable from 'react-loadable'
 import './App.css'
 
+import(/* webpackChunkName:"math" */ './pages/math').then(function(math){
+    console.log(math.add(1,2));
+});
+
 const Loading = () => <div>Loading...</div>;
 
 const Home = Loadable({
-    loader: () => import('./pages/Home'),
+    loader: () => import(/* webpackChunkName: "Home" */ './pages/Home'),
     loading: Loading,
 });
 
 const Sample = Loadable({
-    loader: () => import('./pages/Sample'),
+    loader: () => import(/* webpackChunkName: "Sample" */'./pages/Sample'),
     loading: Loading,
 });
 
