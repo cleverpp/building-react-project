@@ -436,4 +436,52 @@ mode为production时,默认提供所有可能的优化，如代码压缩/作用�
 - CommonsChunkPlugin，webpack4中已移除
 - optimization.splitChunks 和 optimization.runtimeChunk
 
+### optimization.splitChunks
+webpack 将在满足以下条件时自动分割 chunks：
+- 新的chunk能够被多处引用，或者模块来自node_modules文件夹
+- 新的chunk大于30kb（min + gz 之前）
+- 按需加载的模块中，并行请求数小于等于5【分割后产生的并行请求】
+- 初始页面的并行请求数小于等于3
+
+条件配置共有4个选项：
+- minChunks （默认值：1）引用同一模块的最小 chunk 数
+- minSize （默认值：30000）chunk 的最小尺寸
+- maxAsyncRequests （默认值：5）按需加载模块的最大并行请求数
+- maxInitialRequests （默认值：3）入口页面的最大并行请求数
+
+chunks选项
+- initial 选择初始chunks
+- async  选择按需加载chunks
+- all  选择所有chunks，包括initial 和 async
+
+选择模块
+- test 选项用来控制缓存组中包含哪些模块。
+- 默认情况下将选择所有模块。选项的值可以是正则表达式、字符串或函数。
+- 可以通过模块的绝对资源路径或 chunk 名称进行匹配。当一个 chunk 名称匹配时，它包含所有的模块都将被选择。
+
+默认配置
+```
+splitChunks: {
+    chunks: "async",
+    minSize: 30000,
+    minChunks: 1,
+    maxAsyncRequests: 5,
+    maxInitialRequests: 3,
+    name: true,
+    cacheGroups: {
+        default: {
+            minChunks: 2,
+            priority: -20
+            reuseExistingChunk: true,
+        },
+        vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10
+        }
+    }
+}
+```
+- 默认情况下，cache groups 继承来自 splitChunks.*的所有选项，但test, priority 和 reuseExistingChunk选项只能在 cache group 级别进行配置。
+- cache groups还可以使用这些选项: chunks, minSize, minChunks, maxAsyncRequests, maxInitialRequests, name. 
+- 传入false以禁用 default 组：optimization.splitChunks.cacheGroups.default: false
       
