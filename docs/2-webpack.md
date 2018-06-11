@@ -380,6 +380,11 @@ mode为production时,默认提供所有可能的优化，如代码压缩/作用�
 - image-webpack-loader
 - imagemin-webpack-plugin
 
+### 生产模式清除console.log
+webpack4的production模式并没有对console.log进行清除，可以使用
+- strip-loader，可以清除任何你想清除的function
+- webpack-clear-console
+
 ## 插件
 ### CSS抽离
 - ExtractTextWebpackPlugin

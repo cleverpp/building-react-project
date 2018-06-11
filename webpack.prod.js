@@ -7,6 +7,7 @@ const base = require('./webpack.config.js');
 /*const UglifyJsPlugin = require('uglifyjs-webpack-plugin');*/
 /*const ExtractTextPlugin = require('extract-text-webpack-plugin');*/
 /*const MiniCssExtractPlugin = require("mini-css-extract-plugin");*/
+const WebpackStrip = require('strip-loader');
 
 module.exports = merge(base, {
     mode: 'production',
@@ -17,6 +18,7 @@ module.exports = merge(base, {
     },
     module: {
         rules: [
+            {test: /\.jsx?$/, use: WebpackStrip.loader('console.log'), exclude: /node_modules/}
             /*{
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
