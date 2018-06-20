@@ -103,6 +103,12 @@ axios.interceptors.response.use(function (response) {
   });
 ```
 
+## [axios](https://github.com/axios/axios)
+```
+$ npm install --save axios
+```
+![兼容性](https://camo.githubusercontent.com/626c46cfd86214001b4143cda5d0ef27a25bd69f/68747470733a2f2f73617563656c6162732e636f6d2f6f70656e5f73617563652f6275696c645f6d61747269782f6178696f732e737667)
+
 ## 参考
 1. [从ajax到fetch、axios](https://juejin.im/post/5acde23c5188255cb32e7e76)
 2. [Jquery ajax, Axios, Fetch区别之我见](https://segmentfault.com/a/1190000012836882)
