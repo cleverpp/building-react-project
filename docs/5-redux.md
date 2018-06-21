@@ -26,6 +26,10 @@
 - 中间件就是一个函数，对store.dispatch方法进行了改造，在发出 Action 和执行 Reducer 这两步之间，添加了其他功能
 
 ## 如何应用到React项目中
+项目场景：第三方APP跳转到H5页面，将经纬度信息作为查询参数传入。项目中很多的页面都需要经纬度信息。
+
+方案：将经纬度信息存储在Redux Store中
+
 1. 安装redux、react-redux、redux-thunk
 ```
 npm install -S redux react-redux react-thunk
@@ -52,9 +56,101 @@ const store = createStore(
 
 ```
 3. 创建reducer
+```
+export const rootLocationInfo = (
+    state = {
+        latitude: '',//维度31.233858
+        longitude: '',//经度121.663881
+    }, action = {}) => {
+    let payload = action.payload;
+    switch (action.type) {
+        case "ROOTLOCATIONINFO" : {
+            return {
+                ...state,
+                ...payload
+            }
+        }
+        default:
+            return state;
+    }
+};
+```
 4. 创建actionCreator
-5. 应用react-redux
+```
+export const ROOTLOCATIONINFO = 'ROOTLOCATIONINFO';
 
+export const rootLocationInfoAction = (payload = {}) => {
+    return {
+        type: ROOTLOCATIONINFO,
+        payload: payload
+    }
+}
+```
+5. 应用react-redux
+   - Provider
+   - 在根组件App处，获取查询参数并dispatch
+```
+class App extends React.Component {
+    componentDidMount() {
+        let query = util.url2Obj(this.props.search);
+        console.log(query);
+        store.dispatch(rootLocationInfoAction({
+            latitude: query.lat,
+            longitude: query.lon
+        }))
+    }
+
+    render() {
+        return (
+            <Provider store={store}>
+                <HashRouter>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/sample" component={Sample}/>
+                    </Switch>
+                </HashRouter>
+            </Provider>
+        )
+    }
+}
+```
+    
+    - connect，封装UI组件，使其成为容器组件
+```
+// container.js
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
+
+const mapStateToProps = (state) => {
+    return {
+        rootLocationInfo: state.rootLocationInfo
+    }
+};
+
+const container = (component) => withRouter(connect(mapStateToProps)(component));
+
+export default container;
+
+// 将UI组件Home封装成容器组件
+// home.js
+import container from '../store/container';
+class Home extends React.Component {
+    componentDidMount() {
+        console.log(this.props.rootLocationInfo);
+    }
+
+    render() {
+        return (
+            <div>
+                <p>Hello,Welcome to Home</p>
+            </div>
+        );
+    }
+
+}
+
+export default container(Home);
+```
 
 
 ## 参考

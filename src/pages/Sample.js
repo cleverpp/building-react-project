@@ -5,8 +5,14 @@ import React from 'react';
 import addRecords from '../images/normal/add-records.png';
 import test30 from '../images/normal/test30.png';
 import './Home.css'
+import container from '../store/container';
 
 class Sample extends React.Component {
+
+    componentDidMount() {
+        console.log('Sample');
+        console.log(this.props.rootLocationInfo);
+    }
 
     render() {
         return (
@@ -21,4 +27,4 @@ class Sample extends React.Component {
 }
 
 
-export default Sample;
+export default container(Sample);

@@ -7,15 +7,15 @@ import addRecords from '../images/add-records.png';
 import test30 from '../images/test30.png';
 import './Home.css';
 
+import container from '../store/container';
+
 class Home extends React.Component {
-    componentDidMount(){
-        const {location, match, history} = this.props;
-        console.log(location);
-        console.log(match);
-        console.log(history);
+    componentDidMount() {
+        console.log("Home");
+        console.log(this.props.rootLocationInfo);
     }
 
-    render(){
+    render() {
         return (
             <div>
                 <p>Hello,Welcome to Home</p>
@@ -27,4 +27,4 @@ class Home extends React.Component {
 
 }
 
-export default Home;
+export default container(Home);
