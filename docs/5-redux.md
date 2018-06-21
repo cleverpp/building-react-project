@@ -89,7 +89,9 @@ export const rootLocationInfoAction = (payload = {}) => {
 5. 应用react-redux
    - Provider
    - 在根组件App处，获取查询参数并dispatch
+   - connect，封装UI组件，使其成为容器组件
 ```
+// 根组件App.js
 class App extends React.Component {
     componentDidMount() {
         let query = util.url2Obj(this.props.search);
@@ -113,10 +115,7 @@ class App extends React.Component {
         )
     }
 }
-```
-    
-    - connect，封装UI组件，使其成为容器组件
-```
+
 // container.js
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
@@ -151,7 +150,43 @@ class Home extends React.Component {
 
 export default container(Home);
 ```
+## 热加载
+reducer的热加载问题，见[官方release说明](https://github.com/reduxjs/react-redux/releases/tag/v2.0.0)
 
+不使用热加载
+```
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {rootLocationInfo} from './reducers/locationReducer';
+
+//创建一个 Redux store 来以存放应用中所有的 state，应用中应有且仅有一个 store。
+const store = createStore(
+    combineReducers({rootLocationInfo})
+);
+
+
+let unsubscribe = store.subscribe(() => { //监听状态的变化
+        console.log("state changed");
+        console.log(store.getState());
+    }
+);
+
+export default store;
+```
+
+需要使用热加载，增加下面代码
+```
+...
+
+// Webpack Hot Module Replacement API
+if (module.hot) {
+    module.hot.accept('./reducers/locationReducer', () => {
+        const rootLocationInfo = require('./reducers/locationReducer');
+        store.replaceReducer(rootLocationInfo);
+    })
+}
+
+export default store;
+```
 
 ## 参考
 1. [Redux 入门教程（一）：基本用法](http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html)

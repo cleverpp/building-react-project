@@ -18,4 +18,12 @@ let unsubscribe = store.subscribe(() => { //监听状态的变化
     }
 );
 
+// Webpack Hot Module Replacement API
+if (module.hot) {
+    module.hot.accept('./reducers/locationReducer', () => {
+        const rootLocationInfo = require('./reducers/locationReducer');
+        store.replaceReducer(rootLocationInfo);
+    })
+}
+
 export default store;
