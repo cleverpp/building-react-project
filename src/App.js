@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {hot} from 'react-hot-loader'
-import {HashRouter, Route, Switch} from 'react-router-dom'
+import {HashRouter, Route, Switch, BrowserRouter} from 'react-router-dom'
 import Loadable from 'react-loadable'
 import './App.css'
 
@@ -32,12 +32,12 @@ class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <HashRouter>
+                <BrowserRouter>
                     <Switch>
-                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/index" component={Home}/>
                         <Route path="/sample" component={Sample}/>
                     </Switch>
-                </HashRouter>
+                </BrowserRouter>
             </Provider>
         )
     }

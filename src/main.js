@@ -4,7 +4,7 @@ import App from './App';
 import {AppContainer} from 'react-hot-loader'
 
 const render = Component => {
-    ReactDOM.render(
+    ReactDOM.hydrate(
         <AppContainer>
             <Component />
         </AppContainer>,
@@ -12,7 +12,10 @@ const render = Component => {
     )
 }
 
-render(App)
+// setTimeout为了模拟等待加载js
+setTimeout(()=>{
+    render(App)
+}, 1000)
 
 // Webpack Hot Module Replacement API
 if (module.hot) {
