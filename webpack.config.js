@@ -6,13 +6,14 @@ const root = __dirname;
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {ReactLoadablePlugin} = require('react-loadable/webpack');
 
 
 module.exports = {
     bail: true,
     entry: {
         /*'webpack-dev-server/client',*/
-        main:path.resolve(root, 'src/main.js')
+        main: path.resolve(root, 'src/main.js')
     },
     output: {
         path: path.resolve(root, 'dist')
@@ -20,10 +21,10 @@ module.exports = {
     /*externals:{
      Zepto:'Zepto'
      },*/
-    optimization:{
-        runtimeChunk:true,
-        splitChunks:{
-            chunks:'all'
+    optimization: {
+        runtimeChunk: true,
+        splitChunks: {
+            chunks: 'all'
         }
         /*cacheGroups: {
             styles: {
@@ -54,6 +55,9 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             template: 'index.html'
+        }),
+        new ReactLoadablePlugin({
+            filename: './dist/react-loadable.json'
         })
     ]
 };

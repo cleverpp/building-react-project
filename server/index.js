@@ -5,35 +5,32 @@ require('./ignore.js')();
 require('babel-polyfill');
 require('babel-register')({
     presets: ['env', 'react', 'stage-2'],
-    plugins: ['syntax-dynamic-import', "dynamic-import-node"]
+    plugins: ['react-loadable/babel', 'syntax-dynamic-import', "dynamic-import-node"]
 });
 
-const fs = require('fs');
 const path = require('path');
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
-const serve = require('koa-static');
+const staticServer = require('koa-static');
 const cors = require('koa2-cors');
+const Loadable = require('react-loadable');
 
 const routerIndex = require('./routers/index');
-const projDir = path.join(__dirname + '../../dist');
+const projDir = path.join(path.resolve(__dirname,'../dist'));
+const port = process.env.port || 9090;
 
 const app = new Koa();
 
 // 静态服务器
-app.use(serve(projDir));
+app.use(staticServer(projDir));
 
 app.use(cors());
 app.use(bodyParser());
 
-app.use(async (ctx, next) => {
-    let html = await next();
-    let PLACEHOLDER = 'If you see this then something is wrong.';
-    let TEMPLATE = fs.readFileSync(projDir + '/index.html', {encoding: 'utf8'});
-    ctx.body = TEMPLATE.replace(PLACEHOLDER, html);
-})
 app.use(routerIndex.routes()).use(routerIndex.allowedMethods());
 
-app.listen(9090, () => {
-    console.log('The server is running at http://localhost:' + 9090 + '/index')
+Loadable.preloadAll().then(() => {
+    app.listen(port, () => {
+        console.log(`\nListening on port ${port}. Open up http://localhost:${port}/ in your browser.\n`)
+    })
 })

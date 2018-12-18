@@ -5,6 +5,7 @@
     "react"
   ],
   "plugins": [
+    "react-loadable/babel",
     "transform-runtime",
     "react-hot-loader/babel",
     "syntax-dynamic-import"

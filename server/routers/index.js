@@ -6,6 +6,8 @@ const render = require('../render/index').default;
 
 const router = new Router();
 
-router.get('*', render);
+router.get('/', render);
+router.get('/index', render);
+router.get('/sample', render);
 
 module.exports = router;

@@ -3,21 +3,18 @@
  */
 import React from 'react'
 import {hot} from 'react-hot-loader'
-import {HashRouter, Route, Switch, BrowserRouter} from 'react-router-dom'
-import Loadable from 'react-loadable'
+import {HashRouter, BrowserRouter, Switch, Route} from 'react-router-dom'
 import './App.css'
 
 import {Provider} from 'react-redux'
-import store from './store/index';
+import configureStore from './store/index';
 import util from './modules/util';
 import {rootLocationInfoAction} from './store/action/locationAction'
+import routersConfig from './router/index'
+import Loadable from "react-loadable";
 
-
-const Loading = () => <div>Loading...</div>;
-const lazyload = (component) => Loadable({loader: component, loading: Loading});
-
-const Home = lazyload(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
-const Sample = lazyload(() => import(/* webpackChunkName: "Sample" */'./pages/Sample'));
+const initialState = window && window.__INITIAL_STATE__;
+let store = configureStore(initialState);
 
 class App extends React.Component {
     componentDidMount() {
@@ -30,15 +27,22 @@ class App extends React.Component {
     }
 
     render() {
+        let modules = [];
         return (
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Switch>
-                        <Route exact path="/index" component={Home}/>
-                        <Route path="/sample" component={Sample}/>
-                    </Switch>
-                </BrowserRouter>
-            </Provider>
+            <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+                <Provider store={store}>
+                    <BrowserRouter>
+                        <Switch>
+                            {
+                                routersConfig.map(route => (
+                                    <Route key={route.path} exact={route.exact} path={route.path}
+                                           component={route.component}/>
+                                ))
+                            }
+                        </Switch>
+                    </BrowserRouter>
+                </Provider>
+            </Loadable.Capture>
         )
     }
 }

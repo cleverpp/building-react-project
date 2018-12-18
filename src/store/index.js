@@ -10,6 +10,7 @@ const store = createStore(
     combineReducers({rootLocationInfo}),
     applyMiddleware(thunk)
 );
+let configureStore = (initialState) => createStore(combineReducers({rootLocationInfo}), initialState, applyMiddleware(thunk));
 
 
 let unsubscribe = store.subscribe(() => { //监听状态的变化
@@ -26,4 +27,4 @@ if (module.hot) {
     })
 }
 
-export default store;
+export default configureStore;

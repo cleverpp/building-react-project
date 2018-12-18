@@ -2,20 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import {AppContainer} from 'react-hot-loader'
+import Loadable from 'react-loadable';
 
 const render = Component => {
     ReactDOM.hydrate(
         <AppContainer>
-            <Component />
+            <Component/>
         </AppContainer>,
         document.getElementById('root')
     )
 }
 
-// setTimeout为了模拟等待加载js
-setTimeout(()=>{
-    render(App)
-}, 1000)
+window.main = () => {
+    Loadable.preloadReady().then(() => {
+        render(App)
+    });
+};
 
 // Webpack Hot Module Replacement API
 if (module.hot) {
